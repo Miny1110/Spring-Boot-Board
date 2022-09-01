@@ -14,5 +14,9 @@ public class MainController {
 	}
 	
 	
+	@RequestMapping("/")
+	public String home() {
+		return "redirect:/quesiton/list";
+	}
 	
 }
