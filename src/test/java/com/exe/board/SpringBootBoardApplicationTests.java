@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.xmlunit.util.Linqy;
 
+import com.exe.board.question.Question;
 import com.exe.board.question.QuestionRepository;
 
 @SpringBootTest
@@ -24,7 +25,7 @@ class SpringBootBoardApplicationTests {
 	void contextLoads() {
 	}
 	
-	/*
+	
 	@Test
 	void save() {
 		
@@ -45,7 +46,7 @@ class SpringBootBoardApplicationTests {
 	}
 	
 	
-	
+	/*
 	@Test
 	void findAll() {
 		
@@ -128,8 +129,8 @@ class SpringBootBoardApplicationTests {
 		assertEquals(1, questionRepository.count());
 		
 	}
-	*/
 	
+	*/
 	
 	
 	
