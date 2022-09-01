@@ -1,5 +1,6 @@
 package com.exe.board.question;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,16 @@ public class QuestionService {
 	}
 
 
+	public void create(String subject, String content) {
+		
+		Question question = new Question();
+		
+		question.setSubject(subject);
+		question.setContent(content);
+		question.setCreatedDate(LocalDateTime.now());
+		
+		questionRepository.save(question);
+	}
 
 
 }
