@@ -1,4 +1,4 @@
-package com.exe.board;
+package com.exe.board.question;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -6,11 +6,13 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.exe.board.answer.Answer;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,7 +36,10 @@ public class Question {
 	
 	private LocalDateTime createdDate;
 	
-	@OneToMany(mappedBy = "question",cascade = CascadeType.REMOVE) 
+	@OneToMany(mappedBy = "question",cascade = CascadeType.REMOVE,
+			fetch = FetchType.EAGER) 
+	//fetch : 디폴트값은 lazy, 한줄 실행할때마다 db와의 연결을 끊는다.
+	//			eager는 유지하다가 한번에 다 가져온다.
 	private List<Answer> answerList;
 	
 }
