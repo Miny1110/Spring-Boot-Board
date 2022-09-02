@@ -1,7 +1,10 @@
 package com.exe.board.answer;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +25,19 @@ public class AnswerController {
 	
 	/** @RequestMapping 으로 쓰고 뒤에 method 타입을 적어줘도 된다.*/
 	@PostMapping("/create/{id}")
-	public String createAnswer(Model model,@PathVariable("id") Integer id,@RequestParam String content) {
+	public String createAnswer(Model model,@PathVariable("id") Integer id,
+			@Valid AnswerForm answerForm,BindingResult bindingResult) {
 		
 		Question question = questionService.getQuestion(id);
 		
-		answerService.created(question, content);
+		if(bindingResult.hasErrors()) {
+			
+			model.addAttribute("question", question);
+			
+			return "question_detail";
+		}
+		
+		answerService.created(question, answerForm.getContent());
 		
 		return String.format("redirect:/question/detail/%s", id);
 		

@@ -2,13 +2,18 @@ package com.exe.board.question;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.exe.board.answer.AnswerForm;
 
 import lombok.RequiredArgsConstructor;
 
@@ -50,7 +55,7 @@ public class QuestionController {
 	
 	
 	@RequestMapping("/detail/{id}")
-	public String detil(Model model,@PathVariable("id") Integer id) {
+	public String detil(Model model,@PathVariable("id") Integer id,AnswerForm answerForm) {
 		
 		Question question = questionService.getQuestion(id);
 		
@@ -61,15 +66,26 @@ public class QuestionController {
 	
 	
 	@GetMapping("/create")
-	public String questionCreate() {
+	public String questionCreate(QuestionForm questionForm) {
+		
+		
+		
 		return "question_form";
 	}
 	
 	
+	/*
+	 * QuestionForm을 쓰고 BindingResult를 써야한다. QuestionForm에 가서 먼저 검사를 하고
+	 * BindingResult이 실행되어야 하기 때문에
+	 */
 	@PostMapping("/create")
-	public String questionCreate(@RequestParam String subject,@RequestParam String content) {
+	public String questionCreate(@Valid QuestionForm questionForm,BindingResult bindingResult) {
 		
-		questionService.create(subject, content);
+		if(bindingResult.hasErrors()) {
+			return "question_form";
+		}
+		
+		questionService.create(questionForm.getSubject(), questionForm.getContent());
 		
 		return "redirect:/question/list";
 	}

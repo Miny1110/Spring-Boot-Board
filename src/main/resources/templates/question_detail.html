@@ -39,9 +39,12 @@ th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></
 
 
 
-<form th:action="@{|/answer/create/${question.id}|}" method="post" class="my-3">
+<form th:action="@{|/answer/create/${question.id}|}" th:object="${answerForm}" 
+method="post" class="my-3">
 	
-	<textarea rows="10" class="form-control" name="content"></textarea>
+	<div th:replace="form_errors :: formErrorsFragment"></div>
+	
+	<textarea rows="10" class="form-control" th:field="*{content}" ></textarea>
 	<input type="submit" value="답변등록" class="btn btn-primary my-2">
 	
 </form>
