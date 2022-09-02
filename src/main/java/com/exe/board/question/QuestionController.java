@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,10 +43,10 @@ public class QuestionController {
 	/* @Get/PostMapping : get/post 방식으로 왔을 때 실행해라
 	 * @RequestMapping : get/post 상관없이 실행해라. method는 디폴트 get방식이고 직접 적어줄 수 있음*/
 	@RequestMapping("/list")
-	public String list(Model model) {
+	public String list(Model model,@PageableDefault Pageable pageable) {
 		
 		//List<Question> lists = questionRepository.findAll();
-		List<Question> lists = questionService.getList();
+		Page<Question> lists = questionService.getList(pageable);
 		
 		model.addAttribute("lists", lists);
 
