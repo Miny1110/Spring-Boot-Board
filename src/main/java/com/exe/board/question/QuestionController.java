@@ -46,9 +46,9 @@ public class QuestionController {
 	public String list(Model model,@PageableDefault Pageable pageable) {
 		
 		//List<Question> lists = questionRepository.findAll();
-		Page<Question> lists = questionService.getList(pageable);
+		Page<Question> paging = questionService.getList(pageable);
 		
-		model.addAttribute("lists", lists);
+		model.addAttribute("paging", paging);
 
 		return "question_list";
 	}
