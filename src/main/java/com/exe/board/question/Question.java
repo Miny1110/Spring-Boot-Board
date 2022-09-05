@@ -10,9 +10,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.exe.board.answer.Answer;
+import com.exe.board.user.SiteUser;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -41,5 +43,9 @@ public class Question {
 	//fetch : 디폴트값은 lazy, 한줄 실행할때마다 db와의 연결을 끊는다.
 	//			eager는 유지하다가 한번에 다 가져온다.
 	private List<Answer> answerList;
+	
+	
+	@ManyToOne
+	private SiteUser author;
 	
 }

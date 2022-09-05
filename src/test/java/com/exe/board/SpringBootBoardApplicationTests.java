@@ -146,7 +146,7 @@ class SpringBootBoardApplicationTests {
 			String subject = String.format("테스트 데이터입니다:[%03d]", i);
 			String content = String.format("스프링 부트는 재미있다:[%03d]", i);
 			
-			questionService.create(subject, content);
+			questionService.create(subject, content, null);
 			
 		}
 		

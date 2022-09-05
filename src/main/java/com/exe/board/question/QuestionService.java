@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.exe.board.DataNotFoundException;
+import com.exe.board.user.SiteUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -51,17 +52,18 @@ public class QuestionService {
 		if(op.isPresent())
 			return op.get();
 		else
-			throw new DataNotFoundException("Question Not Found");
+			throw new DataNotFoundException("데이터가 없어요");
 	}
 
 
-	public void create(String subject, String content) {
+	public void create(String subject, String content, SiteUser author) {
 		
 		Question question = new Question();
 		
 		question.setSubject(subject);
 		question.setContent(content);
 		question.setCreatedDate(LocalDateTime.now());
+		question.setAuthor(author);
 		
 		questionRepository.save(question);
 	}

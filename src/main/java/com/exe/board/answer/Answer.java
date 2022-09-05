@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import com.exe.board.question.Question;
+import com.exe.board.user.SiteUser;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,4 +34,8 @@ public class Answer {
 	//Foreign Key 생성
 	@ManyToOne //테이블을 조인한 것
 	private Question question;
+	
+	
+	@ManyToOne
+	private SiteUser author;
 }

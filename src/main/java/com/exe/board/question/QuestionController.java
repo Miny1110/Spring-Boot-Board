@@ -1,12 +1,14 @@
 package com.exe.board.question;
 
-import java.util.List;
+import java.security.Principal;
 
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,9 +16,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.exe.board.answer.AnswerForm;
+import com.exe.board.user.SiteUser;
+import com.exe.board.user.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,6 +42,7 @@ public class QuestionController {
 	
 	//private final QuestionRepository questionRepository;
 	private final QuestionService questionService;
+	private final UserService userService;
 	
 	/* @Get/PostMapping : get/post 방식으로 왔을 때 실행해라
 	 * @RequestMapping : get/post 상관없이 실행해라. method는 디폴트 get방식이고 직접 적어줄 수 있음*/
@@ -67,13 +71,13 @@ public class QuestionController {
 		return "question_detail";
 	}
 	
-	
+	/**isAuthenticated 는 이름을 변경하면 안됨*/
+	@PreAuthorize("isAuthenticated")
 	@GetMapping("/create")
 	public String questionCreate(QuestionForm questionForm) {
 		
-		
-		
 		return "question_form";
+		
 	}
 	
 	
@@ -81,14 +85,18 @@ public class QuestionController {
 	 * QuestionForm을 쓰고 BindingResult를 써야한다. QuestionForm에 가서 먼저 검사를 하고
 	 * BindingResult이 실행되어야 하기 때문에
 	 */
+	@PreAuthorize("isAuthenticated")
 	@PostMapping("/create")
-	public String questionCreate(@Valid QuestionForm questionForm,BindingResult bindingResult) {
+	public String questionCreate(@Valid QuestionForm questionForm,
+			BindingResult bindingResult,Principal principal) {
 		
 		if(bindingResult.hasErrors()) {
 			return "question_form";
 		}
 		
-		questionService.create(questionForm.getSubject(), questionForm.getContent());
+		SiteUser siteUser = userService.getUser(principal.getName());
+		
+		questionService.create(questionForm.getSubject(), questionForm.getContent(),siteUser);
 		
 		return "redirect:/question/list";
 	}
