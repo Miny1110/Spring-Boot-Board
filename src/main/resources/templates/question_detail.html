@@ -26,10 +26,22 @@
 		</div>
 		
 		<div class="my-3">
-			<a th:href="@{|/question/modify/${question.id}|}" class="btn btn-outline-secondary"
+			<a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-outline-secondary"
 			sec:authorize="isAuthenticated()" th:if="${question.author!=null and 
 			#authentication.getPrincipal().getUsername()==question.author.userName}"
 			th:text="수정"></a>
+			
+			<!-- javascript:void(0);
+			 : 클릭할 때 페이지 이동은 없이 경고메시지를 띄우기 위해 의미없는 링크를 걸어줌
+			th:data-uri
+			 : 버튼을 클릭했을 때 uri를 만들어낸다. 자바스크립트의 명령어를 타임리프가 갖다씀 -->
+			<a href="javascript:void(0);" th:data-uri="@{|/question/delete/${question.id}|}"
+			class="delete btn btn-sm btn-outline-secondary"
+			sec:authorize="isAuthenticated()" th:if="${question.author!=null and 
+			#authentication.getPrincipal().getUsername()==question.author.userName}"
+			th:text="삭제"></a>			
+			
+			
 		</div>
 		
 	</div>
@@ -88,5 +100,33 @@ method="post" class="my-3">
 </form>
 
 </div>
+
+
+<script type="text/javascript" layout:fragment="deleteScript">
+	
+	const deleteBtn = document.getElementsByClassName("delete");
+	
+	/* delete라는 이름의 클래스를 찾아서 객체를 생성해라
+	클래스가 여러개일 수 있기 때문에 배열로 만든다.
+	그리고 배열로부터 반복문을 통해서 하나씩 꺼낸다. 
+	그리고 그 element를 클릭했을 때 함수를 호출해라*/
+	Array.from(deleteBtn).forEach(function(element){
+		
+		element.addEventListener('click',function(){
+			
+			if(confirm("정말 삭제하시겠습니까?")){
+				location.href=this.dataset.uri;
+			};
+			
+		});
+		
+	});
+
+</script>
+
+
+
+
+
 
 </html>
