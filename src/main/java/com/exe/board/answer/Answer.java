@@ -1,12 +1,14 @@
 package com.exe.board.answer;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.exe.board.question.Question;
@@ -40,4 +42,8 @@ public class Answer {
 	private SiteUser author;
 	
 	private LocalDateTime modifyDate;
+	
+	//@ManyToMany로 하면 새로운 테이블이 만들어진다.
+	@ManyToMany
+	Set<SiteUser> voter;
 }

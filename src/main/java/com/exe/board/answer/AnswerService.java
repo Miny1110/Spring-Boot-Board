@@ -31,15 +31,30 @@ public class AnswerService {
 		return ans;
 	}
 
-//---------------------------------------------------------------------------------------------
+	//답변조회
 	public Answer getAnswer(Integer id) {
+	
+		Optional<Answer> answer = answerRepository.findById(id);
 		
-		Optional<Answer> op = answerRepository.findById(id);
-		
-		if(op.isPresent())
-			return op.get();
+		if(answer.isPresent())
+			return answer.get();
 		else
-			throw new DataNotFoundException("데이터가 없어요");
+			throw new DataNotFoundException("답글이 없습니다");
+
 	}
 	
+	//답변수정
+	public void modify(Answer answer,String content) {
+		
+		answer.setContent(content);
+		answer.setModifyDate(LocalDateTime.now());
+		
+		answerRepository.save(answer);
+		
+	}
+		
+	//답변삭제
+	public void delete(Answer answer) {
+		answerRepository.delete(answer);
+	}
 }

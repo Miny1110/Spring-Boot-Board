@@ -85,6 +85,15 @@ public class QuestionService {
 		
 	}
 
+	
+	public void vote(Question quesiton, SiteUser siteUser) {
+		
+		quesiton.getVoter().add(siteUser);
+		
+		questionRepository.save(quesiton);
+		
+	}
+	
 
 }
 

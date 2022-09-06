@@ -10,11 +10,10 @@
 	<div class="card-body">
 		<div class="card-text" style="white-space:pre-line;" th:text="${question.content}"></div>
 		<div class="d-flex justify-content-end">
-		
-		<div th:if="${question.modifyDate!=null}" class="badge bg-light text-dark p-2 text-start mx-3">
-			<div class="mb-2">수정일 : </div>
-			<div th:text="${#temporals.format(question.modifyDate,'yyyy-MM-dd HH:mm')}"></div>
-		</div>
+			<div th:if="${question.modifyDate!=null}" class="badge bg-light text-dark p-2 text-start mx-3">
+				<div class="mb-2">수정일 : </div>
+				<div th:text="${#temporals.format(question.modifyDate,'yyyy-MM-dd HH:mm')}"></div>
+			</div>
 		
 			<div class="badge bg-light text-dark p-2 text-start">
 				<div class="mb-2">
@@ -26,6 +25,11 @@
 		</div>
 		
 		<div class="my-3">
+			<a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+			th:data-uri="@{|/question/vote/${question.id}|}">추천
+			<span class="badge rounded-pill bg-success" th:text="${#lists.size(question.voter)}"></span>
+			</a>
+		
 			<a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-outline-secondary"
 			sec:authorize="isAuthenticated()" th:if="${question.author!=null and 
 			#authentication.getPrincipal().getUsername()==question.author.userName}"
@@ -40,10 +44,7 @@
 			sec:authorize="isAuthenticated()" th:if="${question.author!=null and 
 			#authentication.getPrincipal().getUsername()==question.author.userName}"
 			th:text="삭제"></a>			
-			
-			
 		</div>
-		
 	</div>
 </div>
 
@@ -60,8 +61,12 @@ th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></
 		th:text="${answer.content}"></div>
 		<div class="d-flex justify-content-end">
 		
+			<div th:if="${answer.modifyDate!=null}" class="badge bg-light text-dark p-2 text-start mx-3">
+				<div class="mb-2">수정일 : </div>
+				<div th:text="${#temporals.format(answer.modifyDate,'yyyy-MM-dd HH:mm')}"></div>
+			</div>
+		
 			<div class="badge bg-light text-dark p-2 text-start">
-			
 				<div class="mb-2">
 					<span th:if="${answer.author!=null}" th:text="${answer.author.userName}"></span>
 				</div>
@@ -70,15 +75,18 @@ th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></
 			</div>
 		</div>
 		
-		
-<!-- 수정**** -->		
 		<div class="my-3">
-			<a th:href="@{|/question/detail/${question.id}|}" class="btn btn-outline-secondary"
+			<a th:href="@{|/answer/modify/${answer.id}|}" class="btn btn-sm btn-outline-secondary"
 			sec:authorize="isAuthenticated()" th:if="${answer.author!=null and 
 			#authentication.getPrincipal().getUsername()==answer.author.userName}"
 			th:text="수정"></a>
+			
+			<a href="javascript:void(0);" th:data-uri="@{|/answer/delete/${answer.id}|}"
+			class="delete btn btn-sm btn-outline-secondary"
+			sec:authorize="isAuthenticated()" th:if="${answer.author!=null and 
+			#authentication.getPrincipal().getUsername()==answer.author.userName}"
+			th:text="삭제"></a>	
 		</div>
-<!-- 수정**** -->	
 
 		
 	</div>
@@ -110,11 +118,26 @@ method="post" class="my-3">
 	클래스가 여러개일 수 있기 때문에 배열로 만든다.
 	그리고 배열로부터 반복문을 통해서 하나씩 꺼낸다. 
 	그리고 그 element를 클릭했을 때 함수를 호출해라*/
-	Array.from(deleteBtn).forEach(function(element){
+	Array.from(deleteBtn).forEach(function(btn){
 		
-		element.addEventListener('click',function(){
+		btn.addEventListener('click',function(){
 			
 			if(confirm("정말 삭제하시겠습니까?")){
+				location.href=this.dataset.uri;
+			};
+			
+		});
+		
+	});
+	
+	
+	const recommendBtn = document.getElementsByClassName("recommend");
+	
+	Array.from(recommendBtn).forEach(function(btn){
+		
+		btn.addEventListener('click',function(){
+			
+			if(confirm("추천하시겠습니까?")){
 				location.href=this.dataset.uri;
 			};
 			

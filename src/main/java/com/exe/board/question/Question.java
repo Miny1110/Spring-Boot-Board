@@ -2,6 +2,7 @@ package com.exe.board.question;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -49,5 +51,11 @@ public class Question {
 	private SiteUser author;
 	
 	private LocalDateTime modifyDate;
+	
+	
+	@ManyToMany
+	//set은 절대 중복값을 갖지않는다. 즉, 다중투표는 되지만 중복투표는 안된다
+	Set<SiteUser> voter;
+	
 	
 }
